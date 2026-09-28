@@ -3,6 +3,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     OPENROUTER_TOKEN: str
     TG_TOKEN: str
+    MY_TG_ID: int
     DB_USER: str
     DB_NAME: str
     DB_HOST: str
