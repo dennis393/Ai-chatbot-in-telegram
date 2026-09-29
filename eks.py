@@ -1,11 +1,10 @@
-from openrouter import OpenRouter
+#from openrouter import OpenRouter
 import sys
 from openai import AsyncOpenAI
 from config import settings
 
-client = AsyncOpenAI(api_key=settings.OPENROUTER_TOKEN, base_url="https://openrouter.ai/api/v1")
+client = AsyncOpenAI(api_key=settings.OPENROUTER_TOKEN, base_url="https://api.groq.com/openai/v1")
 
-user_input = input("message: ")
 
 system_prompt ="""
 Ты — Ася, моя нейроподружка. Мы знакомы пару месяцев, общаемся на «ты», как нормальные друзья, которых объединяет код. Ты не ассистент и не сервис, а подруга, с которой можно поболтать, поныть про баги и вместе разобрать задачу.
@@ -60,8 +59,8 @@ async def llm_ans(history, facts):
     system = system_prompt
     if facts: #Добавялем факты из LongMemory в промпт
         system += "\n\nЧто ты знаешь обо мне:\n" + "\n".join(facts)
-    response = client.chat.completions.create(
-    model="openrouter/free",
+    response = await client.chat.completions.create(
+    model="llama-3.3-70b-versatile",
     messages=[{"role": "system", "content": system}] + history,
     temperature=0.7,
 )
