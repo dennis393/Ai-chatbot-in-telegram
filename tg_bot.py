@@ -5,6 +5,7 @@ from aiogram.filters import CommandStart, Command
 from aiogram.types import Message
 from orm_from_llm import chatHistory, LongMemory, async_session
 from sqlalchemy import select
+from eks import llm_ans
 dp = Dispatcher()
 
 #Основная функция для запуска бота
@@ -69,8 +70,9 @@ async def chat(message: Message):
 
     await save_message("user", message.text)
     history = await get_30_last_messages(30)
+    print("HISTORY:", history)
     facts = await get_all_facts()
-    answer = await ask_llm(history, facts)
+    answer = await llm_ans(history, facts)
     await save_message("assistant", answer)
     await message.answer(answer)    
     
