@@ -1,4 +1,5 @@
 import asyncio
+import time
 from aiogram import Bot, Dispatcher, F
 from config import settings
 from aiogram.filters import CommandStart, Command 
@@ -6,6 +7,8 @@ from aiogram.types import Message
 from orm_from_llm import chatHistory, LongMemory, async_session
 from sqlalchemy import select
 from eks import llm_ans
+
+
 dp = Dispatcher()
 
 #Основная функция для запуска бота
@@ -20,7 +23,8 @@ async def main():
         await dp.start_polling(bot)    
     finally:
         print("Bot stopped")
-    
+
+#Хэндлер для того, чтобы после команды /start ботом мог пользоваться оперделенный человек, т.к бот публичный им может воспользоваться кто угодно   
 @dp.message(CommandStart())
 async def hi_func(message: Message):
     user_id = message.from_user.id
@@ -62,25 +66,24 @@ async def get_all_facts():
         res = await sess.execute(select(LongMemory))
         messages = res.scalars().all()
         return [x.fact for x in messages]
-
-@dp.message(F.text & ~F.text.startswith("/")) #Условие означает что хендлер сработает только на сообщения, где есть текст (F.text) и текст не начинается с / (~ означает «не»).
+            
+        
+#Условие означает что хендлер сработает только на сообщения, где есть текст (F.text) и текст не начинается с / (~ означает «не»).
+@dp.message(F.text & ~F.text.startswith("/"))
 async def chat(message: Message):
     if message.from_user.id != settings.MY_TG_ID:
         return
 
-    await save_message("user", message.text)
+    await save_message("user", message.text) #Сохраняем сообщения в базу
     history = await get_30_last_messages(30)
-    print("HISTORY:", history)
     facts = await get_all_facts()
-    answer = await llm_ans(history, facts)
-    await save_message("assistant", answer)
-    await message.answer(answer)    
+    answer = await llm_ans(history, facts)   
+    if not answer:
+        await message.answer("Бесплатные модели могут вернуть пустой ответ, попробуйте еще разок")
+        return
+    else:   
+        await save_message("assistant", "answer")
+        await message.answer(answer) #Отправка ответа в тг
     
-
-
-    
-    
-
-
 if __name__ == '__main__':
     asyncio.run(main())
