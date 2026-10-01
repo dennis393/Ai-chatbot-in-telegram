@@ -37,7 +37,4 @@ async_session = sessionmaker(bind=CONN_DB, class_=AsyncSession, expire_on_commit
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    async with CONN_DB.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
     yield
-    await CONN_DB.dispose()    
