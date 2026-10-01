@@ -12,7 +12,7 @@ services:
   api:
     build: .
     dns:
-      - 127.0.0.53
+      - 168.63.129.16
     env_file: .env
     ports:
       - "8000:8000"
