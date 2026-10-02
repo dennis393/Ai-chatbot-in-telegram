@@ -34,7 +34,7 @@ async def hi_func(message: Message):
     await message.answer("Привет я Ася, я переехала в телеграм теперь мы можем общаться в здесь")
 
 #Через команду заносим данные которые надо чтобы ии помнил всегда
-@dp.message(Command("remember this")) 
+@dp.message(Command("remember_this")) 
 async def remember_long_time(message: Message):
     user_id = message.from_user.id
     async with async_session() as sess:
