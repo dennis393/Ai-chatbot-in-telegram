@@ -35,9 +35,7 @@ FastAPI используется только для управления async-
  `/remember_this <текст>` - Сохранить факт в долгую память 
 
 ## Переменные окружения 
-(.env)
- TG_TOKEN  токен бота от BotFather, 
- MY_TG_ID  мой Telegram ID, 
- OPENROUTER_TOKEN  ключ OpenRouter, 
- DB_USER, DB_PASSWORD, DB_NAME, DB_HOST, DB_PORT  настройки PostgreSQL, 
- POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB  для контейнера с БД 
+(`.env`)
+
+## Планы
+- Деплой на сервер
