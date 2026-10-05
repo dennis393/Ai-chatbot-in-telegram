@@ -40,3 +40,9 @@ FastAPI используется только для управления async-
 ## Демо
 ![Скриншот 1](start.jpg)
 ![Скриншот 2](ques.jpg)
+![Скриншот 3](ques2.jpg)
+![Скриншот 4](ques3.jpg)
+![Скриншот 5](remember.jpg)
+![Скриншот 6](fix_code1.jpg)
+![Скриншот 7](fix_code2.jpg)
+![Скриншот 7](fix_code3.jpg)
