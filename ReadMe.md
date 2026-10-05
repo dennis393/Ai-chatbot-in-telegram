@@ -38,4 +38,4 @@ FastAPI используется только для управления async-
 (`.env`)
 
 ## Демо
-<img src="start.jpg" width="250">
+<img src="start.jpg" width="300">
