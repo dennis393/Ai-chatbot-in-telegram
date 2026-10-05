@@ -9,8 +9,11 @@ class Settings(BaseSettings):
     DB_HOST: str
     DB_PASSWORD: str
     DB_PORT: str
+    POSTGRES_USER: str
+    POSTGRES_PASSWORD: str
+    POSTGRES_DB: str
     
-    model_config = SettingsConfigDict(env_file=".env")
+    model_config = SettingsConfigDict(env_file=".env", exta="ignore")
 
 settings = Settings()
     
