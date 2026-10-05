@@ -2,7 +2,7 @@ import asyncio
 import time
 from aiogram import Bot, Dispatcher, F
 from config import settings
-from aiogram.filters import CommandStart, Command 
+from aiogram.filters import CommandStart, Command, CommandObject
 from aiogram.types import Message
 from orm_from_llm import chatHistory, LongMemory, async_session
 from sqlalchemy import select
@@ -35,7 +35,7 @@ async def hi_func(message: Message):
 
 #Через команду заносим данные которые надо чтобы ии помнил всегда
 @dp.message(Command("remember_this")) 
-async def remember_long_time(message: Message):
+async def remember_long_time(message: Message, command: CommandObject):
     user_id = message.from_user.id
     async with async_session() as sess:
         if message.from_user.id != settings.MY_TG_ID:
