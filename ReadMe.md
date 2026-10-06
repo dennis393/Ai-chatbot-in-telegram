@@ -38,15 +38,15 @@ FastAPI используется только для управления async-
 (`.env`)
 
 ## Запуск(через Docker)
-git clone https://github.com/dennis393/Ai-chatbot-in-telegram.git
-cd Ai-chatbot-in-telegram
-cp .env.example .env   # заполнить значения, DB_HOST=db
-docker compose up --build
+`git clone https://github.com/dennis393/Ai-chatbot-in-telegram.git`,
+`cd Ai-chatbot-in-telegram`,
+`cp .env.example .env   # заполнить значения, DB_HOST=db`,
+`docker compose up --build`
 
 ## Локально 
-`pip install -r requirements.txt`
-Поднять PostgreSQL, прописать параметры в `.env`, применить миграции: `alembic upgrade head`
-Первый терминал: `uvicorn main:app`
+`pip install -r requirements.txt`,
+Поднять PostgreSQL, прописать параметры в `.env`, применить миграции: `alembic upgrade head`,
+Первый терминал: `uvicorn main:app`,
 Второй терминал: `python tg_bot.py`
 
 ## Примеры работы(к сожалению бесплатные модели не умеют работать с фотографиями)
