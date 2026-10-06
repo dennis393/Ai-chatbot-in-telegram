@@ -37,5 +37,5 @@ FastAPI используется только для управления async-
 ## Переменные окружения 
 (`.env`)
 
-## Демо
+## Демо(к сожалению бесплатные модели не умеют работать с фотографиями)
 <img src="start.jpg" width="300"> <img src="ques.jpg" width="300"> <img src="ques2.jpg" width="300"> <img src="ques3.jpg" width="300"> <img src="remember.jpg" width="300"> <img src="fix_code1.jpg" width="300"> <img src="fix_code2.jpg" width="300"> <img src="fix_code3.jpg" width="300"> 
