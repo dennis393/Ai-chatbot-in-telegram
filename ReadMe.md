@@ -49,5 +49,5 @@ FastAPI используется только для управления async-
 Первый терминал: `uvicorn main:app`,
 Второй терминал: `python tg_bot.py`
 
-## Примеры работы(к сожалению бесплатные модели не умеют работать с фотографиями)
+## Примеры работы(к сожалению бесплатные модели не умеют работать с фотографиями, в окружении Codespace у бота были проблемы с DNS до api.telegram.org.)
 <img src="screenshots/start.jpg" width="300"> <img src="screenshots/ques.jpg" width="300"> <img src="screenshots/ques2.jpg" width="300"> <img src="screenshots/ques3.jpg" width="300"> <img src="screenshots/remember.jpg" width="300"> <img src="screenshots/fix_code1.jpg" width="300"> <img src="screenshots/fix_code2.jpg" width="300"> <img src="screenshots/fix_code3.jpg" width="300"> 
