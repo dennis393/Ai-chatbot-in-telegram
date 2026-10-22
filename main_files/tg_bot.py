@@ -6,8 +6,19 @@ from aiogram.filters import CommandStart, Command, CommandObject
 from aiogram.types import Message
 from orm_from_llm import chatHistory, LongMemory, async_session
 from sqlalchemy import select
+from aiogram.utils.chat_action import ChatActionSender
 from eks import llm_ans
 
+from pathlib import Path
+# Получаем путь к текущему файлу (tg_bot.py)
+current_file = Path(__file__).resolve()
+
+# Поднимаемся на два уровня вверх: из main_files в корень репозитория
+# (если tg_bot.py лежит прямо в main_files, то .parent.parent ведет в корень)
+root_dir = current_file.parent.parent 
+
+# Соединяем путь корня с именем вашего файла конфигурации
+config_path = root_dir / "config"
 
 dp = Dispatcher()
 
@@ -73,11 +84,11 @@ async def get_all_facts():
 async def chat(message: Message):
     if message.from_user.id != settings.MY_TG_ID:
         return
-
-    await save_message("user", message.text) #Сохраняем сообщения в базу
-    history = await get_30_last_messages(30)
-    facts = await get_all_facts()
-    answer = await llm_ans(history, facts)   
+    async with ChatActionSender.typing(bot=message.bot, chat_id=message.chat.id):
+        await save_message("user", message.text) #Сохраняем сообщения в базу
+        history = await get_30_last_messages(30)
+        facts = await get_all_facts()
+        answer = await llm_ans(history, facts)   
     if not answer:
         await message.answer("Бесплатные модели могут вернуть пустой ответ, попробуйте еще разок")
         return
