@@ -8,17 +8,8 @@ from orm_from_llm import chatHistory, LongMemory, async_session
 from sqlalchemy import select
 from aiogram.utils.chat_action import ChatActionSender
 from eks import llm_ans
+from sqlalchemy import delete
 
-from pathlib import Path
-# Получаем путь к текущему файлу (tg_bot.py)
-current_file = Path(__file__).resolve()
-
-# Поднимаемся на два уровня вверх: из main_files в корень репозитория
-# (если tg_bot.py лежит прямо в main_files, то .parent.parent ведет в корень)
-root_dir = current_file.parent.parent 
-
-# Соединяем путь корня с именем вашего файла конфигурации
-config_path = root_dir / "config"
 
 dp = Dispatcher()
 
@@ -57,6 +48,55 @@ async def remember_long_time(message: Message, command: CommandObject):
         sess.add(LongMemory(category="user", fact=command.args))
         await sess.commit()
     await message.answer("Запомнила")
+
+#Очистка временной памяти    
+@dp.message(Command("clear"))
+async def clear_short_memory(message: Message):
+    if message.from_user.id != settings.MY_TG_ID:
+        return
+    async with async_session() as sess:
+        await sess.execute(delete(chatHistory))
+        await sess.commit()
+    await message.answer("Короткая память очищена")
+
+#Для вывода фактов о пользователе в виде списка
+@dp.message(Command("memory"))
+async def delete_fact(message: Message, command: CommandObject):
+    if message.from_user.id != settings.MY_TG_ID:
+        return
+    async with async_session() as sess:
+        res = await sess.execute(select(LongMemory))
+        facts = res.scalars().all()
+        if not facts:
+            await message.answer("Память пуста.")
+            return 
+        facts = "\n".join(f"{f.id}. {f.fact}" for f in facts)
+        await message.answer(facts)
+
+#Ужаляем конкретный факт о пользователе
+@dp.message(Command("forget"))
+async def forget_fact(message: Message, command: CommandObject):
+    if message.from_user.id != settings.MY_TG_ID:
+        return
+    # command.args это текст после команды: для "/forget 5" будет "5"
+    if not command.args or not command.args.isdigit():
+        await message.answer("После команды /forget надо указать номер факта")
+        return
+    fact_id = int(command.args)
+    async with async_session() as sess:
+        result = await sess.execute(
+            delete(LongMemory).where(LongMemory.id == fact_id)
+        )
+        await sess.commit()
+        
+        
+#rowcount («количество строк») это число строк, которые базе данных пришлось затронуть при выполнении запроса.
+#Когда делается DELETE, UPDATE или INSERT, база после выполнения сообщает, сколько строк она изменила. 
+#SQLAlchemy кладёт это число в result.rowcount.
+    if result.rowcount == 0:
+        await message.answer("Факта с таким номером нет.")
+    else:
+        await message.answer("Факт удалён.")
     
 #Сохраняем сообщения в память бота    
 async def save_message(role: str, content: str):
