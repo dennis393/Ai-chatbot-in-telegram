@@ -2,6 +2,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     OPENROUTER_TOKEN: str
+    GEMINI_API_KEY: str
     TG_TOKEN: str
     MY_TG_ID: int
     DB_USER: str
